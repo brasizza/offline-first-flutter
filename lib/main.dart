@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
+import 'package:offline_first/src/data/repository/contato_repository.dart';
 
 import 'firebase_options.dart';
 import 'src/core/connection_check/connection_check.dart';
@@ -11,8 +12,9 @@ import 'src/features/lista_contatos.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initHive();
   await initFirebase();
+  await initHive();
+
   final syncService = SyncService(
     box: Hive.box<ContatoModel>('contacts'),
     firestore: FirebaseFirestore.instance,
@@ -21,6 +23,7 @@ void main() async {
     syncService,
   );
   await checkConnection.init();
+
   runApp(const MyApp());
 }
 
@@ -28,7 +31,8 @@ Future<void> initHive() async {
   await Hive.initFlutter();
   Hive.registerAdapter(ContatoModelAdapter());
   await Hive.openBox<ContatoModel>('contacts');
-  // await Hive.box<ContatoModel>('contacts').clear();
+  final repository = ContatoRepository(contatoBox: Hive.box<ContatoModel>('contacts'));
+  await repository.initialSync();
 }
 
 Future<void> initFirebase() async {

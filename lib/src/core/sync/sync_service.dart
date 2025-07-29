@@ -43,9 +43,19 @@ class SyncService {
     if (_isSyncing) return;
     _isSyncing = true;
     try {
-      await firestore.collection('contatos').add(contato.copyWith(isSynced: true).toMap());
-      await contato.delete();
-      log('[Sync] Contato sincronizado: ${contato.toString()}');
+      // 1. Envia para o Firebase
+      await firestore.collection('contatos').add(contato.toMap());
+
+      // 2. Atualiza o contato local (NÃO deleta!)
+      final index = box.values.toList().indexWhere((c) => c.key == contato.key);
+      if (index != -1) {
+        final updatedContato = contato.copyWith(
+          isSynced: true,
+        );
+        await box.putAt(index, updatedContato);
+      }
+
+      log('[Sync] Contato sincronizado e mantido localmente: ${contato.toString()}');
     } catch (e) {
       log('[Sync] Erro ao sincronizar contato: $e');
     } finally {
@@ -63,10 +73,21 @@ class SyncService {
       if (pendentes.isNotEmpty) {
         hasUpdate = true;
       }
-      for (final item in pendentes) {
-        await firestore.collection('contatos').add(item.copyWith(isSynced: true).toMap());
-        await item.delete();
+
+      for (final contato in pendentes) {
+        // 1. Envia para o Firebase
+        final docRef = await firestore.collection('contatos').add(contato.toMap());
+        // 2. Atualiza o contato local (NÃO deleta!)
+        final index = box.values.toList().indexWhere((c) => c.key == contato.key);
+        if (index != -1) {
+          final updatedContato = contato.copyWith(
+            isSynced: true,
+            remoteId: docRef.id,
+          );
+          await box.putAt(index, updatedContato);
+        }
       }
+
       log('[Sync] Finalizado com sucesso');
     } catch (e) {
       log('[Sync] Erro ao sincronizar: $e');
