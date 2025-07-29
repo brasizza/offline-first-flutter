@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "311393451741",
+    "project_id": "offlinefirst",
+    "storage_bucket": "offlinefirst.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311393451741:android:8f331ae2feffae7fb66534",
+        "android_client_info": {
+          "package_name": "com.example.offline_first"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2Ab5niME6fxk1dc9Tc5FS1Nio-sFsRdM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
