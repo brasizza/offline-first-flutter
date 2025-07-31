@@ -44,7 +44,7 @@ class SyncService {
     _isSyncing = true;
     try {
       // 1. Envia para o Firebase
-      await firestore.collection('contatos').add(contato.toMap());
+      await firestore.collection('contatos').add(contato.copyWith(isSynced: true).toMap());
 
       // 2. Atualiza o contato local (NÃO deleta!)
       final index = box.values.toList().indexWhere((c) => c.key == contato.key);
@@ -76,7 +76,7 @@ class SyncService {
 
       for (final contato in pendentes) {
         // 1. Envia para o Firebase
-        final docRef = await firestore.collection('contatos').add(contato.toMap());
+        final docRef = await firestore.collection('contatos').add(contato.copyWith(isSynced: true).toMap());
         // 2. Atualiza o contato local (NÃO deleta!)
         final index = box.values.toList().indexWhere((c) => c.key == contato.key);
         if (index != -1) {
