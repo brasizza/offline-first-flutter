@@ -38,8 +38,6 @@ class _ContainerFormState extends State<ContainerForm> {
       nameController.text = widget.initialData!.name;
       responsibleController.text = widget.initialData!.responsiblePerson;
       items = widget.initialData!.items;
-    } else {
-      items = [];
     }
 
     return Form(

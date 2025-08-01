@@ -32,7 +32,6 @@ class StarterApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Cadastro de containers',
           initialRoute: '/splash',
-
           themeMode: ThemeMode.system, // ou ThemeMode.light / dark
           routes: routes,
           builder: (context, child) => switch (isReady) {
@@ -44,10 +43,5 @@ class StarterApp extends StatelessWidget {
         );
       },
     );
-    // return MaterialApp(
-    //   title: 'Flutter Demo',
-    //   theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
-    //   home: const ListaContatos(),
-    // );
   }
 }

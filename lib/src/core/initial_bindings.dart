@@ -16,7 +16,6 @@ class InitialBindings extends ApplicationBindings {
     Bind.singletonAsync(
       (i) async {
         final box = await Hive.openBox<BoxContainerModel>('boxContainers');
-        await box.clear();
         return box;
       },
     ),
