@@ -1,3 +1,5 @@
+import 'package:offline_first/src/data/models/box_container_model.dart';
+
 import '../repositories/create_container_repository.dart';
 
 class CreateContainerUseCase {
@@ -5,7 +7,7 @@ class CreateContainerUseCase {
 
   CreateContainerUseCase(this.repository);
 
-  Future<dynamic> call() async {
-    await repository.fetch();
+  Future<bool> call(BoxContainerModel container) async {
+    return await repository.register(container);
   }
 }

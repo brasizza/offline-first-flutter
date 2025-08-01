@@ -6,10 +6,12 @@ abstract class BoxContainerRepository {
   BoxContainerModel? getById(String id);
 
   Future<BoxContainerModel> addContainer(BoxContainerModel container);
+  Future<BoxContainerModel> addContainerRemote(BoxContainerModel container);
 
   Future<BoxContainerModel> updateContainer(BoxContainerModel container);
 
   Future<void> deleteContainer(String id);
+  Future<void> deleteContainerRemote(String id);
 
   Future<bool> initialSync();
 

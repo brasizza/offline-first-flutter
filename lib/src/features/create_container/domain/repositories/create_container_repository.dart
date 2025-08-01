@@ -1,3 +1,5 @@
+import 'package:offline_first/src/data/models/box_container_model.dart';
+
 abstract class CreateContainerRepository {
-  Future<void> fetch();
+  Future<bool> register(BoxContainerModel container);
 }

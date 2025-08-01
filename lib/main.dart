@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:offline_first/src/app.dart';
 import 'package:offline_first/src/data/models/box_container_model.dart';
+import 'package:offline_first/src/data/models/item_container_model.dart';
 
 import 'firebase_options.dart';
-import 'src/data/models/contato_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +16,7 @@ void main() async {
 
 Future<void> initHive() async {
   await Hive.initFlutter();
-  Hive.registerAdapter(ContatoModelAdapter());
+  Hive.registerAdapter(ItemContainerModelAdapter());
   Hive.registerAdapter(BoxContainerModelAdapter());
 }
 

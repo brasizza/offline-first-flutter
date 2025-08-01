@@ -4,18 +4,18 @@
 
 import 'package:hive_ce/hive.dart';
 import 'package:offline_first/src/data/models/box_container_model.dart';
-import 'package:offline_first/src/data/models/contato_model.dart';
+import 'package:offline_first/src/data/models/item_container_model.dart';
 
 extension HiveRegistrar on HiveInterface {
   void registerAdapters() {
     registerAdapter(BoxContainerModelAdapter());
-    registerAdapter(ContatoModelAdapter());
+    registerAdapter(ItemContainerModelAdapter());
   }
 }
 
 extension IsolatedHiveRegistrar on IsolatedHiveInterface {
   void registerAdapters() {
     registerAdapter(BoxContainerModelAdapter());
-    registerAdapter(ContatoModelAdapter());
+    registerAdapter(ItemContainerModelAdapter());
   }
 }

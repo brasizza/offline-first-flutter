@@ -1,11 +1,24 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-class ItemContainerModel {
+import 'package:hive_ce/hive.dart';
+
+part 'item_container_model.g.dart';
+
+@HiveType(typeId: 2)
+class ItemContainerModel extends HiveObject {
+  @HiveField(0)
   String id;
+
+  @HiveField(1)
   String name;
+
+  @HiveField(2)
   String description;
+
+  @HiveField(3)
   int quantity;
+
   ItemContainerModel({
     required this.id,
     required this.name,
@@ -52,17 +65,5 @@ class ItemContainerModel {
   @override
   String toString() {
     return 'ItemContainerModel(id: $id, name: $name, description: $description, quantity: $quantity)';
-  }
-
-  @override
-  bool operator ==(covariant ItemContainerModel other) {
-    if (identical(this, other)) return true;
-
-    return other.id == id && other.name == name && other.description == description && other.quantity == quantity;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^ name.hashCode ^ description.hashCode ^ quantity.hashCode;
   }
 }

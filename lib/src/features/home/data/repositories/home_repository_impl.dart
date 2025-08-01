@@ -12,4 +12,10 @@ class HomeRepositoryImpl implements HomeRepository {
   Future<List<BoxContainerModel>?> fetchAll() async {
     return await _service.getAllContainers();
   }
+
+  @override
+  Future<bool> deleteContainer(BoxContainerModel container) async {
+    await _service.deleteContainer(container.id);
+    return true;
+  }
 }

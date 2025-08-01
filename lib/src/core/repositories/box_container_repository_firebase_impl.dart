@@ -45,7 +45,7 @@ class BoxContainerRepositoryImpl implements BoxContainerRepository {
     if (index != -1) {
       final updatedContainer = container.copyWith(
         updatedAt: DateTime.now(),
-        isSynced: false, // Marca para sincronização
+        isSynced: false,
       );
       await _boxContainerBox.putAt(index, updatedContainer);
       log('[BoxContainerRepository] Container atualizado: ${updatedContainer.name}');
@@ -64,7 +64,7 @@ class BoxContainerRepositoryImpl implements BoxContainerRepository {
       final deletedContainer = container.copyWith(
         isDeleted: true,
         updatedAt: DateTime.now(),
-        isSynced: false, // Marca para sincronização
+        isSynced: false,
       );
       await _boxContainerBox.putAt(index, deletedContainer);
       log('[BoxContainerRepository] Container marcado como deletado: ${container.name}');
@@ -92,13 +92,12 @@ class BoxContainerRepositoryImpl implements BoxContainerRepository {
 
     try {
       log('[BoxContainerRepository] Iniciando sincronização de dados remotos...');
-      final snapshot = await _firestore.collection('box_containers').get();
+      final snapshot = await _firestore.collection('containers').get();
 
       int newContainers = 0;
       for (var doc in snapshot.docs) {
         final remoteContainer = BoxContainerModel.fromMap(doc.data());
 
-        // Verifica se já existe localmente para evitar duplicação
         final existsLocally = _boxContainerBox.values.any(
           (local) => local.id == remoteContainer.id || local.remoteId == doc.id || (local.name == remoteContainer.name && local.responsiblePerson == remoteContainer.responsiblePerson && local.createdAt == remoteContainer.createdAt),
         );
@@ -118,7 +117,7 @@ class BoxContainerRepositoryImpl implements BoxContainerRepository {
       return true;
     } catch (e) {
       log('[BoxContainerRepository] Erro ao sincronizar dados remotos: $e');
-      rethrow; // Re-lança para permitir tratamento pela camada superior
+      rethrow;
     }
   }
 
@@ -132,7 +131,6 @@ class BoxContainerRepositoryImpl implements BoxContainerRepository {
     return _boxContainerBox.values.where((container) => !container.isDeleted).length;
   }
 
-  /// Limpa containers deletados permanentemente (usar com cuidado)
   Future<int> clearDeletedContainers() async {
     final deletedContainers = _boxContainerBox.values.where((container) => container.isDeleted).toList();
 
@@ -144,12 +142,34 @@ class BoxContainerRepositoryImpl implements BoxContainerRepository {
     return deletedContainers.length;
   }
 
-  /// Força sincronização de um container específico
   Future<void> forceSyncContainer(String id) async {
     final container = getById(id);
     if (container != null && !container.isSynced) {
-      // Este método seria chamado pelo SyncService
       log('[BoxContainerRepository] Container $id marcado para sincronização forçada');
     }
+  }
+
+  @override
+  Future<BoxContainerModel> addContainerRemote(BoxContainerModel container) async {
+    if (container.remoteId != null) {
+      await _firestore.collection('containers').doc(container.remoteId).set(container.toMap());
+      log('[BoxContainerRepository] Container adicionado remotamente: ${container.name}');
+      return container;
+    } else {
+      final docRef = await _firestore.collection('containers').add(container.toMap());
+      final updatedContainer = container.copyWith(remoteId: docRef.id, isSynced: true);
+      log('[BoxContainerRepository] Container adicionado remotamente com novo ID: ${updatedContainer.name}');
+      return updatedContainer;
+    }
+  }
+
+  @override
+  Future<void> deleteContainerRemote(String id) async {
+    await _firestore.collection('containers').where('id', isEqualTo: id).get().then((snapshot) async {
+      for (var doc in snapshot.docs) {
+        await doc.reference.delete();
+      }
+    });
+    log('[BoxContainerRepository] Container deletado remotamente: $id');
   }
 }

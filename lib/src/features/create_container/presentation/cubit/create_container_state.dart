@@ -11,6 +11,11 @@ class CreateContainerSuccess extends CreateContainerState {
   CreateContainerSuccess(this.data);
 }
 
+class CreateContainerLoadContainer extends CreateContainerState {
+  final BoxContainerModel container;
+  CreateContainerLoadContainer(this.container);
+}
+
 class CreateContainerError extends CreateContainerState {
   final String message;
   CreateContainerError(this.message);

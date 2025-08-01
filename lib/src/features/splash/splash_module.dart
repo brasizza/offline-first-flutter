@@ -1,4 +1,6 @@
 import 'package:flutter_getit/flutter_getit.dart';
+import 'package:offline_first/src/core/connection_check/connection_check.dart';
+import 'package:offline_first/src/core/sync/sync_service.dart';
 
 import 'data/repositories/splash_repository_impl.dart';
 import 'domain/repositories/splash_repository.dart';
@@ -35,6 +37,8 @@ class SplashModule extends FlutterGetItModule {
   @override
   void onInit(Injector i) {
     super.onInit(i);
+    i<ConnectionCheck>().startListening();
+    i<SyncService>().startSync();
     i<SplashCubit>().load();
   }
 }

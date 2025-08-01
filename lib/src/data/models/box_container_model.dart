@@ -69,7 +69,7 @@ class BoxContainerModel extends HiveObject {
       'id': id,
       'name': name,
       'responsiblePerson': responsiblePerson,
-      'items': items,
+      'items': items.map((x) => x.toMap()).toList(),
       'createdAt': createdAt.millisecondsSinceEpoch,
       'updatedAt': updatedAt.millisecondsSinceEpoch,
       'isSynced': isSynced,
