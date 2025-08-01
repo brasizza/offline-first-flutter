@@ -3,16 +3,19 @@
 // Check in to version control
 
 import 'package:hive_ce/hive.dart';
+import 'package:offline_first/src/data/models/box_container_model.dart';
 import 'package:offline_first/src/data/models/contato_model.dart';
 
 extension HiveRegistrar on HiveInterface {
   void registerAdapters() {
+    registerAdapter(BoxContainerModelAdapter());
     registerAdapter(ContatoModelAdapter());
   }
 }
 
 extension IsolatedHiveRegistrar on IsolatedHiveInterface {
   void registerAdapters() {
+    registerAdapter(BoxContainerModelAdapter());
     registerAdapter(ContatoModelAdapter());
   }
 }

@@ -41,6 +41,9 @@ dependencies:
   hive_ce_generator: ^1.9.3
   cloud_firestore: ^5.6.12
   event_bus: ^2.0.1
+  flutter_getit: ^3.0.1
+  bloc: ^9.0.0
+  flutter_bloc: ^9.1.1
 
 dev_dependencies:
   flutter_test:

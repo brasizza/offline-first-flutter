@@ -1,0 +1,7 @@
+version: 0.1.0
+name: flutter_feature
+description: Gera uma feature com estrutura modular usando flutter_getit.
+vars:
+  name:
+    type: string
+    description: Nome da feature
