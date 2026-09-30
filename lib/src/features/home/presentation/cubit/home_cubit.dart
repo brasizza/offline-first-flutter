@@ -13,7 +13,8 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this.useCase, this.deleteUseCase) : super(HomeInitial());
 
   Future<void> load() async {
-    emit(HomeLoading());
+    // Recarregamentos (ex.: após cada sincronização) mantêm a lista na tela sem piscar o loading.
+    if (state is! HomeSuccess) emit(HomeLoading());
     try {
       final data = await useCase();
       emit(HomeSuccess(data));
@@ -23,7 +24,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void deleteContainer(BoxContainerModel container) async {
-    emit(HomeLoading());
+    // Remoção otimista: o Dismissible exige que o item saia da árvore imediatamente.
+    final current = state;
+    if (current is HomeSuccess) {
+      emit(HomeSuccess(current.data?.where((c) => c.id != container.id).toList()));
+    }
     try {
       final success = await deleteUseCase(container);
       if (success) {

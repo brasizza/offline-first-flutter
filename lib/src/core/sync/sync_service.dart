@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:event_bus/event_bus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:offline_first/src/core/connection_check/connection_check.dart';
 
@@ -12,6 +13,12 @@ class SyncService {
   final Box<BoxContainerModel> box;
   final BoxContainerRepository boxContainerRepository;
   final EventBus eventBus;
+
+  /// Estado exposto para a UI: indica se há uma sincronização em andamento.
+  final ValueNotifier<bool> isSyncing = ValueNotifier(false);
+
+  /// Momento da última sincronização que enviou alterações.
+  final ValueNotifier<DateTime?> lastSyncAt = ValueNotifier(null);
 
   SyncService({required this.box, required this.boxContainerRepository, required this.eventBus});
 
@@ -41,6 +48,7 @@ class SyncService {
       final pendentes = box.values.where((e) => !e.isSynced).toList();
       if (pendentes.isNotEmpty) {
         hasUpdate = true;
+        isSyncing.value = true;
       }
 
       for (final container in pendentes) {
@@ -96,8 +104,10 @@ class SyncService {
       log('[Sync] Erro ao sincronizar: $e');
     } finally {
       if (hasUpdate) {
+        lastSyncAt.value = DateTime.now();
         eventBus.fire(SyncCompletedEvent());
       }
+      isSyncing.value = false;
       _isSyncing = false;
     }
   }
