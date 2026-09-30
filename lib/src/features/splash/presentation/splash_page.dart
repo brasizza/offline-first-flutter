@@ -45,6 +45,8 @@ class _SplashPageState extends BaseStateCubit<SplashPage, SplashCubit> {
         body: DecoratedBox(
           decoration: const BoxDecoration(gradient: AppTheme.brandGradient),
           child: Stack(
+            // Sem expand o Stack encolhe até a largura do conteúdo e o gradiente não cobre a tela.
+            fit: StackFit.expand,
             children: [
               const Positioned(top: -80, right: -60, child: _Glow(size: 260)),
               const Positioned(bottom: -100, left: -80, child: _Glow(size: 300)),

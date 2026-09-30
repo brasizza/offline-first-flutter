@@ -24,7 +24,7 @@ App de demonstração do padrão *offline first* em Flutter: os dados vivem prim
     <td align="center"><img src="docs/screenshots/home.png" width="200"><br><sub><b>Online</b> · tudo sincronizado</sub></td>
     <td align="center"><img src="docs/screenshots/home-offline.png" width="200"><br><sub><b>Offline</b> · alterações pendentes</sub></td>
     <td align="center"><img src="docs/screenshots/edit-box.png" width="200"><br><sub>Cadastro do box e seus itens</sub></td>
-    <td align="center"><img src="docs/screenshots/item-sheet.png" width="200"><br><sub>Cadastro de item</sub></td>
+    <td align="center"><img src="docs/screenshots/item-sheet.png" width="200"><br><sub>Item em bottom sheet</sub></td>
   </tr>
   <tr>
     <td align="center"><img src="docs/screenshots/splash.png" width="200"><br><sub>Splash</sub></td>
